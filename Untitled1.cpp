@@ -10,7 +10,7 @@ int main(){
 	char senha[50];
 		
 		printf("Login: \n");
-		gets("%s", &login);
+		scanf("%s", &login);
 		printf("Senha: \n");
 		scanf("%s", &senha);
 
