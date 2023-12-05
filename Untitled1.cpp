@@ -2,6 +2,18 @@
 #include <stdlib.h>
 #include <string.h>
 
+struct Cliente {
+    char nome[50];
+    char modeloVeiculo[50];
+    char reclamacoes[200];
+    int anoVeiculo;
+    char placaDoVeiculo[10];
+    int kmRodados;
+    int anoUltimaManutencao;
+};
+
+
+
 int main(){
 	
 
