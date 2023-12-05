@@ -10,20 +10,18 @@ struct Cliente {
     char placaDoVeiculo[10];
     int kmRodados;
     int anoUltimaManutencao;
-};
-
+}
+struct OrdemServico {
+    int numeroOS;
+    struct Cliente cliente;
+    char checklist[200];
+    char pecas[200];
+    char servicosRealizados[200];
+    char mecanico[50];
+    char atendente[50];
+}
 
 
 int main(){
-	
-
-
-	char login[50];
-	char senha[50];
-		
-		printf("Login: \n");
-		scanf("%s", &login);
-		printf("Senha: \n");
-		scanf("%s", &senha);
 
 }
