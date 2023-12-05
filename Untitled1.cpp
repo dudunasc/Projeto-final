@@ -20,7 +20,11 @@ struct OrdemServico {
     char mecanico[50];
     char atendente[50];
 }
-
+struct Produto {
+    char nome[50];
+    float preco;
+    int quantidadeEstoque;
+}
 
 int main(){
 
