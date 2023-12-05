@@ -82,18 +82,6 @@ void cadastrarClienteGerarOS() {
         if (scanf("%d", &novoCliente.anoUltimaManutencao) != 1) {
         }
 
-        novaOS.numeroOS = numeroOS;
-        novaOS.cliente = novoCliente;
-
-        ordensServico[numeroOS - 1] = novaOS;
-        numeroOS++;
-
-        printf("Cliente cadastrado e OS gerada com sucesso!\n");
-    } else {
-        printf("Limite máximo de Ordens de Serviço atingido.\n");
-    }
-}
-
 int main(){
 
 }
