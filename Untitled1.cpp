@@ -82,70 +82,55 @@ void cadastrarClienteGerarOS() {
         if (scanf("%d", &novoCliente.anoUltimaManutencao) != 1) {
         }
 
-int main(){
+ srand(time(NULL));  
 
-}
-void cadastrarProduto() {
-    if (numeroProdutos < 100) {
-        struct Produto novoProduto;
+        novaOS.numeroOS = rand();  
 
-        printf("Digite o nome do produto: ");
-        if (fgets(novoProduto.nome, sizeof(novoProduto.nome), stdin) == NULL);
-        novoProduto.nome[strcspn(novoProduto.nome, "\n")] = '\0';
+        novaOS.cliente = novoCliente;
 
-        printf("Digite o preço do produto: ");
-        if (scanf("%f", &novoProduto.preco) != 1);
+        ordensServico[numeroOS - 1] = novaOS;
+        numeroOS++;
+
+        printf("Cliente cadastrado e OS gerada com sucesso!\n");
+
         
-        printf("Digite a quantidade em estoque: ");
-        if (scanf("%d", &novoProduto.quantidadeEstoque) != 1);
-        
-
-        produtos[numeroProdutos] = novoProduto;
-        numeroProdutos++;
-
-        printf("Produto cadastrado com sucesso!\n");
+        printf("Número do Cliente: %d\n", novaOS.numeroOS);
     } else {
-        printf("Limite máximo de produtos atingido.\n");
+        printf("Limite máximo de Ordens de Serviço atingido.\n");
     }
+} void preencherChecklist() {
+    int produtoSelecionado;
+    char continuar;
+
+    printf("Mecânico, selecione os produtos utilizados no checklist (digite o número do produto):\n");
+
+    do {
+        exibirTabelaPrecos();
+
+        printf("Digite 'fim' para encerrar a seleção.\n");
+
+        printf("Escolha: ");
+        if (scanf("%d", &produtoSelecionado) != 1);
+
+        if (produtoSelecionado >= 1 && produtoSelecionado <= sizeof(produtos) / sizeof(produtos[0])) {
+            printf("Produto selecionado: %s\n", produtos[produtoSelecionado - 1].nome);
+
+            if (produtos[produtoSelecionado - 1].quantidadeEstoque > 0) {
+                produtos[produtoSelecionado - 1].quantidadeEstoque--;
+                printf("Quantidade em estoque atualizada: %d\n", produtos[produtoSelecionado - 1].quantidadeEstoque);
+            } else {
+                printf("Estoque esgotado para este produto.\n");
+            }
+        } else if (produtoSelecionado != 0) {
+            printf("Opção inválida. Tente novamente.\n");
+        }
+
+        while (getchar() != '\n');
+
+        printf("Deseja adicionar mais produtos? (s/n): ");
+        if (scanf("%c", &continuar) != 1);
+
+    } while (continuar == 's');
 }
 
 
-void consultarProdutos() {
-    exibirTabelaPrecos();
-}
-
-
-void cadastrarClienteGerarOS() {
-    if (numeroOS < 100) {
-        struct Cliente novoCliente;
-        struct OrdemServico novaOS;
-
-        printf("Digite o nome do cliente: ");
-        if (fgets(novoCliente.nome, sizeof(novoCliente.nome), stdin) == NULL);
-        novoCliente.nome[strcspn(novoCliente.nome, "\n")] = '\0';
-
-        printf("Digite o modelo do veículo: ");
-        if (fgets(novoCliente.modeloVeiculo, sizeof(novoCliente.modeloVeiculo), stdin) == NULL);
-        novoCliente.modeloVeiculo[strcspn(novoCliente.modeloVeiculo, "\n")] = '\0';
-
-        printf("Digite as reclamações do cliente: ");
-        if (fgets(novoCliente.reclamacoes, sizeof(novoCliente.reclamacoes), stdin) == NULL);
-        novoCliente.reclamacoes[strcspn(novoCliente.reclamacoes, "\n")] = '\0';
-
-        printf("Digite o ano do veículo: ");
-        if (scanf("%d", &novoCliente.anoVeiculo) != 1);
-
-        printf("Digite a placa do veículo: ");
-        if (fgets(novoCliente.placaDoVeiculo, sizeof(novoCliente.placaDoVeiculo), stdin) == NULL);
-        novoCliente.placaDoVeiculo[strcspn(novoCliente.placaDoVeiculo, "\n")] = '\0';
-
-        int c;
-        while ((c = getchar()) != '\n' && c != EOF);
-
-        printf("Digite os km rodados do veículo: ");
-        if (scanf("%d", &novoCliente.kmRodados) != 1);
-
-        int clearBuffer;
-        while ((clearBuffer = getchar()) != '\n' && clearBuffer != EOF);
-        printf("Digite o ano da última manutenção do veículo: ");
-        if (scanf("%d", &novoCliente.anoUltimaManutencao) != 1);
