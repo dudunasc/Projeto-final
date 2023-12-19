@@ -60,8 +60,6 @@ struct Funcionario funcionarios[3] = {
 
 int numeroFuncionarios = 0;
 
-
-
 void salvarFuncionariosEmArquivo() {
     FILE *arquivo = fopen("funcionarios.txt", "w");
     if (arquivo == NULL) {
@@ -328,6 +326,31 @@ while (1) {
     }
     
     printf("Produtos adicionados à Ordem de Serviço com sucesso!\n");
+}
+
+
+
+
+int fazerLogin(struct Funcionario *usuarioLogado) {
+    char login[20];
+    char senha[20];
+
+    printf("Login: ");
+    scanf("%s", login);
+
+    printf("Senha: ");
+    scanf("%s", senha);
+
+    for (int i = 0; i < sizeof(funcionarios) / sizeof(funcionarios[0]); i++) {
+        if (strcmp(funcionarios[i].login, login) == 0 && strcmp(funcionarios[i].senha, senha) == 0) {
+            printf("Login bem-sucedido!\n");
+            *usuarioLogado = funcionarios[i];
+            return 1;
+        }
+    }
+
+    printf("Login ou senha incorretos.\n");
+    return 0;
 }
 
 int main(){
