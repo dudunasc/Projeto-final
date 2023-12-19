@@ -193,7 +193,8 @@ void cadastrarClienteGerarOS() {
     } else {
         printf("Limite máximo de Ordens de Serviço atingido.\n");
     }
-} void preencherChecklist() {
+}
+void preencherChecklist() {
     int produtoSelecionado;
     char continuar;
 
@@ -226,6 +227,75 @@ void cadastrarClienteGerarOS() {
         if (scanf("%c", &continuar) != 1);
 
     } while (continuar == 's');
+}
+int main(){
+    carregarFuncionariosDoArquivo();
+
+    int tentativas = 3;
+    struct Funcionario usuarioLogado; 
+     while (tentativas > 0) {
+        printf("Bem-vindo à Oficina Mecânica!\n");
+
+         if (fazerLogin(&usuarioLogado)) {
+            system("cls");
+             
+            int opcao = 0;
+            while (opcao != 7) {
+                printf("\nBem-vindo, %s!\n", usuarioLogado.nome);
+                printf("Escolha a opção:\n");
+                printf("1 - Cadastrar Cliente\n");
+                printf("2 - Preencher Checklist\n");
+                printf("3 - Consultar Peças e Gerar Orçamento\n");
+                printf("4 - Registrar Serviços Realizados\n");
+                printf("5 - Cadastrar Produto\n");
+                printf("6 - Cadastrar Funcionário\n");
+                printf("7 - Sair\n");
+                
+                printf("Escolha: ");
+                scanf("%d", &opcao);
+
+                while (getchar() != '\n');
+
+                 switch (opcao) {
+                    case 1:
+                        cadastrarCliente();
+                        break;
+                    case 2:
+                        preencherChecklist();
+                        break;
+                      case 3:
+                        consultarPecasGerarOrcamento();
+                        break;
+                    case 4:
+                        registrarServicosRealizados();
+                        break;
+                     case 5:
+                        cadastrarProduto();
+                        break;
+                    case 6:
+                        cadastrarFuncionario();
+                        break;
+                       case 7:
+                        printf("Saindo...\n");
+                        break;
+                    default:
+                        printf("Opção inválida. Tente novamente.\n");
+                }
+
+                system("pause");
+                system("cls");
+}
+        break;
+        } else {
+            tentativas--;
+            printf("Tentativas restantes: %d\n", tentativas);
+        }
+    }
+  if (tentativas == 0) {
+        printf("Número de tentativas excedido. Saindo...\n");
+}
+
+    return 0;
 }
 
 
