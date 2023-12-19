@@ -360,9 +360,7 @@ while (1) {
                 strcat(ordensServico[indexOS].pecas, "; ");
                 produtos[opcaoProduto - 1].quantidadeEstoque -= quantidade;
 
-
                *quantidadeProdutos += quantidade;
-
 
                *valorProdutos += produtos[opcaoProduto - 1].preco * quantidade;
              } else {
@@ -376,7 +374,129 @@ while (1) {
     printf("Produtos adicionados à Ordem de Serviço com sucesso!\n");
 }
 
+void consultarPecasGerarOrcamento() {
+    char cpfCliente[15];
+    int quantidadeProdutos = 0; 
+    float valorProdutos = 0.0; 
 
+    printf("Digite o CPF do cliente: ");
+    if (fgets(cpfCliente, sizeof(cpfCliente), stdin) == NULL) {
+        perror("Erro ao ler o CPF do cliente");
+        return;
+    }
+    cpfCliente[strcspn(cpfCliente, "\n")] = '\0'; 
+
+  
+    int indexOS = encontrarCliente(cpfCliente);
+
+    if (indexOS != -1) {
+       
+        float valorMaoDeObraFixa = 100.0;
+        float valorMaoDeObraVariavel = 10.0;
+
+       
+        printf("\nDados do veículo do Cliente %s:\n", ordensServico[indexOS].cliente.nomeCompleto);
+        printf("Modelo do veículo: %s\n", ordensServico[indexOS].cliente.modeloVeiculo);
+        printf("Reclamações do cliente: %s\n", ordensServico[indexOS].cliente.reclamacoes);
+        printf("Ano do veículo: %d\n", ordensServico[indexOS].cliente.anoVeiculo);
+        printf("Placa do veículo: %s\n", ordensServico[indexOS].cliente.placaDoVeiculo);
+        printf("Km rodados do veículo: %d\n", ordensServico[indexOS].cliente.kmRodados);
+        printf("Ano da última manutenção do veículo: %d\n", ordensServico[indexOS].cliente.anoUltimaManutencao);      
+        printf("\nPerguntas que não atenderam no Checklist do veículo do cliente %s:\n", ordensServico[indexOS].cliente.nomeCompleto);
+
+       
+        char perguntas[][100] = {
+            "Pneus",
+            "Fluidos",
+            "Freios",
+            "Iluminação",
+            "Suspensão",
+            "Direção",
+            "Bateria",
+            "Sistema Elétrico"
+        };
+
+        
+        for (int i = 0; i < sizeof(perguntas) / sizeof(perguntas[0]); i++) {
+            if (ordensServico[indexOS].checklist[i] == '0') {
+                printf("%s\n", perguntas[i]);
+            }
+        }
+
+     
+        adicionarProdutosOS(indexOS, &quantidadeProdutos, &valorProdutos);
+        
+        ordensServico[indexOS].numeroOS = numeroOS++;
+        
+        float valorMaoDeObraTotal = valorMaoDeObraFixa + valorMaoDeObraVariavel * quantidadeProdutos;
+       
+        exibirTabelaPrecos();
+  
+        printf("\nDetalhes do valor:\n");
+        printf("  - Valor dos produtos: R$%.2f\n", valorProdutos);
+        printf("  - Valor da mão de obra (mecânico): R$%.2f\n", valorMaoDeObraTotal);
+
+        float valorTotal = valorProdutos + valorMaoDeObraTotal;
+        printf("  - Valor total: R$%.2f\n", valorTotal);
+
+        
+        printf("\nDeseja realizar a manutenção? (1 - Sim / 0 - Não): ");
+        if (scanf("%d", &ordensServico[indexOS].aceitaServico) != 1) {
+            perror("Erro ao ler a opção do cliente");
+            return;
+        }
+
+       
+        if (ordensServico[indexOS].aceitaServico) {
+            printf("Manutenção agendada. Obrigado!\n");
+        } else {
+            printf("Manutenção recusada. Obrigado!\n");
+        }
+    } else {
+        printf("Cliente não encontrado.\n");
+    }
+}
+void consultarServicosRealizados() {
+    char cpfCliente[15];
+
+    printf("Digite o CPF do cliente: ");
+    if (fgets(cpfCliente, sizeof(cpfCliente), stdin) == NULL) {
+        perror("Erro ao ler o CPF do cliente");
+        return;
+    }
+    cpfCliente[strcspn(cpfCliente, "\n")] = '\0';
+
+    int indexOS = encontrarCliente(cpfCliente);
+
+    if (indexOS != -1) {
+        printf("\nServiços realizados para o Cliente %s (Número da OS: %d):\n", ordensServico[indexOS].cliente.nomeCompleto, ordensServico[indexOS].numeroOS);
+
+        printf("Modelo do veículo: %s\n", ordensServico[indexOS].cliente.modeloVeiculo);
+        printf("Reclamações do cliente: %s\n", ordensServico[indexOS].cliente.reclamacoes);
+        printf("Ano do veículo: %d\n", ordensServico[indexOS].cliente.anoVeiculo);
+        printf("Placa do veículo: %s\n", ordensServico[indexOS].cliente.placaDoVeiculo);
+        printf("Km rodados do veículo: %d\n", ordensServico[indexOS].cliente.kmRodados);
+        printf("Ano da última manutenção do veículo: %d\n", ordensServico[indexOS].cliente.anoUltimaManutencao);
+
+        printf("\nServiços Realizados:\n");
+        if (strlen(ordensServico[indexOS].servicosRealizados) > 0) {
+            printf("%s\n", ordensServico[indexOS].servicosRealizados);
+        } else {
+            printf("Nenhum serviço registrado.\n");
+        }
+
+        printf("\nProdutos Utilizados:\n");
+        if (strlen(ordensServico[indexOS].pecas) > 0) {
+            printf("%s\n", ordensServico[indexOS].pecas);
+        } else {
+            printf("Nenhum produto utilizado.\n");
+        }
+
+        printf("\n");  // Adiciona uma linha em branco para melhorar a formatação
+    } else {
+        printf("Cliente não encontrado.\n");
+    }
+}
 
 
 int fazerLogin(struct Funcionario *usuarioLogado) {
