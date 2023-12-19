@@ -1,43 +1,138 @@
+#include <cctype>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
+#include <locale.h>
+#include <stdlib.h>
+#include <time.h>
+
 
 struct Cliente {
-    char nome[50];
+    char nomeCompleto[100];
+    int numeroCliente;
+    char cpf[15];
+    char endereco[100];
+    char email[50];
     char modeloVeiculo[50];
     char reclamacoes[200];
     int anoVeiculo;
     char placaDoVeiculo[10];
     int kmRodados;
     int anoUltimaManutencao;
-}
+    char telefone[15];
+};
+
+struct Produto {
+    char nome[50];
+    float preco;
+    int quantidadeEstoque;
+};
+
 struct OrdemServico {
     int numeroOS;
+    char cpf[15];  
     struct Cliente cliente;
     char checklist[200];
     char pecas[200];
     char servicosRealizados[200];
     char mecanico[50];
     char atendente[50];
-}
-struct Produto {
-    char nome[50];
-    float preco;
-    int quantidadeEstoque;
-}
+    int aceitaServico; 
+    float precoTotalProdutos; 
+};
 
 struct OrdemServico ordensServico[100];
-int numeroOs = 1;
+int numeroOS = 1;
 
-struct Produto produtos [100];
+struct Produto produtos[100];
 int numeroProdutos = 0;
 
-void exibirTabelaPrecos () {
+static int numeroCliente = 1;
+
+struct Funcionario {
+    char login[20];
+    char senha[20];
+    char nome[50]; 
+};  
+
+struct Funcionario funcionarios[3] = {
+    {"admin", "admin123", "Administrador"},
+};
+
+int numeroFuncionarios = 0;
+
+
+
+void salvarFuncionariosEmArquivo() {
+    FILE *arquivo = fopen("funcionarios.txt", "w");
+    if (arquivo == NULL) {
+        perror("Erro ao abrir o arquivo de funcionários");
+        return;
+    }
+
+    for (int i = 0; i < numeroFuncionarios; i++) {
+        fprintf(arquivo, "%s %s %s\n", funcionarios[i].login, funcionarios[i].senha, funcionarios[i].nome);
+    }
+
+    fclose(arquivo);
+}
+
+
+void carregarFuncionariosDoArquivo() {
+    FILE *arquivo = fopen("funcionarios.txt", "r");
+    if (arquivo == NULL) {
+        perror("Erro ao abrir o arquivo de funcionários");
+        return;
+    }
+
+    while (fscanf(arquivo, "%s %s %s", funcionarios[numeroFuncionarios].login, funcionarios[numeroFuncionarios].senha, funcionarios[numeroFuncionarios].nome) == 3) {
+        numeroFuncionarios++;
+        if (numeroFuncionarios >= sizeof(funcionarios) / sizeof(funcionarios[0])) {
+            printf("Limite de funcionários atingido. Alguns funcionários podem não ter sido carregados.\n");
+            break;
+        }
+    }
+
+    fclose(arquivo);
+}
+
+void cadastrarFuncionario() {
+    struct Funcionario novoFuncionario;
+
+    printf("Digite o login do novo funcionário: ");
+    scanf("%s", novoFuncionario.login);
+
+    printf("Digite a senha do novo funcionário: ");
+    scanf("%s", novoFuncionario.senha);
+
+    printf("Digite o nome do novo funcionário: ");
+    scanf("%s", novoFuncionario.nome);
+
+    for (int i = 0; i < numeroFuncionarios; i++) {
+        if (strcmp(funcionarios[i].login, novoFuncionario.login) == 0) {
+            printf("Login já existente. Escolha outro login.\n");
+            return;
+        }
+    }
+
+    if (numeroFuncionarios < sizeof(funcionarios) / sizeof(funcionarios[0])) {
+        funcionarios[numeroFuncionarios] = novoFuncionario;
+        printf("Funcionário cadastrado com sucesso!\n");
+        numeroFuncionarios++;
+        salvarFuncionariosEmArquivo();
+    } else {
+        printf("Limite de funcionários atingido. Não foi possível cadastrar.\n");
+    }
+}
+
+
+void exibirTabelaPrecos() {
     printf("\nTabela de Produtos Cadastrados:\n");
     printf("%-3s%-25s%-20s%s\n", "Nº", "Nome do Produto", "Preço (R$)", "Estoque");
 
-    for (int i = 0; i < numerosdeProdutos, i++){
+    for (int i = 0; i < numeroProdutos; i++) {
         printf("%-3d%-25s%-20.2f%d\n", i + 1, produtos[i].nome, produtos[i].preco, produtos[i].quantidadeEstoque);
+    }
+}
     }
 }
 void cadastrarClienteGerarOS() {
