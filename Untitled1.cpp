@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-
 struct Cliente {
     char nomeCompleto[100];
     int numeroCliente;
@@ -74,7 +73,6 @@ void salvarFuncionariosEmArquivo() {
     fclose(arquivo);
 }
 
-
 void carregarFuncionariosDoArquivo() {
     FILE *arquivo = fopen("funcionarios.txt", "r");
     if (arquivo == NULL) {
@@ -122,7 +120,6 @@ void cadastrarFuncionario() {
     }
 }
 
-
 void exibirTabelaPrecos() {
     printf("\nTabela de Produtos Cadastrados:\n");
     printf("%-3s%-25s%-20s%s\n", "Nº", "Nome do Produto", "Preço (R$)", "Estoque");
@@ -131,8 +128,26 @@ void exibirTabelaPrecos() {
         printf("%-3d%-25s%-20.2f%d\n", i + 1, produtos[i].nome, produtos[i].preco, produtos[i].quantidadeEstoque);
     }
 }
+
+int encontrarCliente(const char *cpfCliente) {
+    
+    char cpfFormatado[15];
+    int j = 0;
+    for (int i = 0; cpfCliente[i]; i++) {
+        if (isdigit(cpfCliente[i])) {
+            cpfFormatado[j++] = cpfCliente[i];
+        }
     }
+    cpfFormatado[j] = '\0';
+
+    for (int i = 0; i < sizeof(ordensServico) / sizeof(ordensServico[0]); i++) {
+        if (strcmp(ordensServico[i].cpf, cpfFormatado) == 0) {
+            return i;
+        }
+    }
+    return -1;
 }
+
 void cadastrarClienteGerarOS() {
     if (numeroOS < 100) {
         struct Cliente novoCliente;
