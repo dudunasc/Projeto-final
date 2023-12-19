@@ -148,65 +148,100 @@ int encontrarCliente(const char *cpfCliente) {
     return -1;
 }
 
-void cadastrarClienteGerarOS() {
-    if (numeroOS < 100) {
-        struct Cliente novoCliente;
-        struct OrdemServico novaOS;
+void cadastrarCliente() {
+    struct Cliente novoCliente;
 
-        printf("Digite o nome do cliente: ");
-        if (fgets(novoCliente.nome, sizeof(novoCliente.nome), stdin) == NULL) {
-        }
-        novoCliente.nome[strcspn(novoCliente.nome, "\n")] = '\0';
-
-        printf("Digite o modelo do veículo: ");
-        if (fgets(novoCliente.modeloVeiculo, sizeof(novoCliente.modeloVeiculo), stdin) == NULL) {
-        }
-        novoCliente.modeloVeiculo[strcspn(novoCliente.modeloVeiculo, "\n")] = '\0';
-
-        printf("Digite as reclamações do cliente: ");
-        if (fgets(novoCliente.reclamacoes, sizeof(novoCliente.reclamacoes), stdin) == NULL) {
-        }
-        novoCliente.reclamacoes[strcspn(novoCliente.reclamacoes, "\n")] = '\0';
-
-        printf("Digite o ano do veículo: ");
-        if (scanf("%d", &novoCliente.anoVeiculo) != 1) {
-        }
-
-        printf("Digite a placa do veículo: ");
-        if (fgets(novoCliente.placaDoVeiculo, sizeof(novoCliente.placaDoVeiculo), stdin) == NULL) {
-        }
-        novoCliente.placaDoVeiculo[strcspn(novoCliente.placaDoVeiculo, "\n")] = '\0';
-
-        int c;
-        while ((c = getchar()) != '\n' && c != EOF);
-
-        printf("Digite os km rodados do veículo: ");
-        if (scanf("%d", &novoCliente.kmRodados) != 1) {
-            // Lidar com erro de entrada
-        }
-        int clearBuffer;
-        while ((clearBuffer = getchar()) != '\n' && clearBuffer != EOF);
-        printf("Digite o ano da última manutenção do veículo: ");
-        if (scanf("%d", &novoCliente.anoUltimaManutencao) != 1) {
-        }
-
- srand(time(NULL));  
-
-        novaOS.numeroOS = rand();  
-
-        novaOS.cliente = novoCliente;
-
-        ordensServico[numeroOS - 1] = novaOS;
-        numeroOS++;
-
-        printf("Cliente cadastrado e OS gerada com sucesso!\n");
-
-        
-        printf("Número do Cliente: %d\n", novaOS.numeroOS);
-    } else {
-        printf("Limite máximo de Ordens de Serviço atingido.\n");
+    printf("Digite o nome completo: ");
+    if (fgets(novoCliente.nomeCompleto, sizeof(novoCliente.nomeCompleto), stdin) == NULL) {
+        printf("Erro ao ler o nome completo.\n");
+        return;
     }
+    novoCliente.nomeCompleto[strcspn(novoCliente.nomeCompleto, "\n")] = '\0';
+
+    novoCliente.numeroCliente = numeroCliente++;
+
+    printf("Digite o CPF: ");
+    if (fgets(novoCliente.cpf, sizeof(novoCliente.cpf), stdin) == NULL) {
+        printf("Erro ao ler o CPF.\n");
+        return;
+    }
+    novoCliente.cpf[strcspn(novoCliente.cpf, "\n")] = '\0';
+
+    printf("Digite o endereço do cliente: ");
+    if (fgets(novoCliente.endereco, sizeof(novoCliente.endereco), stdin) == NULL) {
+        printf("Erro ao ler o endereço.\n");
+        return;
+    }
+    novoCliente.endereco[strcspn(novoCliente.endereco, "\n")] = '\0';
+
+    printf("Digite o e-mail do cliente: ");
+    if (fgets(novoCliente.email, sizeof(novoCliente.email), stdin) == NULL) {
+        printf("Erro ao ler o e-mail.\n");
+        return;
+    }
+    novoCliente.email[strcspn(novoCliente.email, "\n")] = '\0';
+
+    printf("Digite o número de telefone do cliente: ");
+    if (fgets(novoCliente.telefone, sizeof(novoCliente.telefone), stdin) == NULL) {
+        printf("Erro ao ler o telefone.\n");
+        return;
+    }
+    novoCliente.telefone[strcspn(novoCliente.telefone, "\n")] = '\0';
+
+    printf("Digite o modelo do veículo do cliente: ");
+    if (fgets(novoCliente.modeloVeiculo, sizeof(novoCliente.modeloVeiculo), stdin) == NULL) {
+        printf("Erro ao ler o modelo do veículo.\n");
+        return;
+    }
+    novoCliente.modeloVeiculo[strcspn(novoCliente.modeloVeiculo, "\n")] = '\0';
+
+    printf("Digite as reclamações do cliente: ");
+    if (fgets(novoCliente.reclamacoes, sizeof(novoCliente.reclamacoes), stdin) == NULL) {
+        printf("Erro ao ler as reclamações.\n");
+        return;
+    }
+    novoCliente.reclamacoes[strcspn(novoCliente.reclamacoes, "\n")] = '\0';
+
+    printf("Digite o ano do veículo: ");
+    if (scanf("%d", &novoCliente.anoVeiculo) != 1) {
+        printf("Erro ao ler o ano do veículo.\n");
+        return;
+    }
+
+   
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+
+    printf("Digite a placa do veículo: ");
+    if (fgets(novoCliente.placaDoVeiculo, sizeof(novoCliente.placaDoVeiculo), stdin) == NULL) {
+        printf("Erro ao ler a placa do veículo.\n");
+        return;
+    }
+    novoCliente.placaDoVeiculo[strcspn(novoCliente.placaDoVeiculo, "\n")] = '\0';
+
+    printf("Digite os km rodados do veículo: ");
+    if (scanf("%d", &novoCliente.kmRodados) != 1) {
+        printf("Erro ao ler os km rodados.\n");
+        return;
+    }
+
+    printf("Digite o ano da última manutenção do veículo: ");
+    if (scanf("%d", &novoCliente.anoUltimaManutencao) != 1) {
+        printf("Erro ao ler o ano da última manutenção.\n");
+        return;
+    }
+
+
+    strcpy(ordensServico[numeroOS - 1].cpf, novoCliente.cpf);
+
+    
+    ordensServico[numeroOS - 1].cliente = novoCliente;
+
+    printf("Cliente cadastrado com sucesso!\n");
+
+    numeroOS++;
 }
+
 void preencherChecklist() {
   int resposta;
   char cpfCliente[15];
@@ -229,9 +264,7 @@ void preencherChecklist() {
         printf("Placa do veículo: %s\n", ordensServico[indexOS].cliente.placaDoVeiculo);
         printf("Km rodados do veículo: %d\n", ordensServico[indexOS].cliente.kmRodados);
         printf("Ano da última manutenção do veículo: %d\n", ordensServico[indexOS].cliente.anoUltimaManutencao);
-
         printf("\nChecklist para o cliente %s:\n", ordensServico[indexOS].cliente.nomeCompleto);
-
         printf("1. Pneus:\n");
         printf("   Os pneus estão em boa condição? Eles têm a pressão correta e a profundidade mínima legal? (1 - Sim / 0 - Não): ");
         if (scanf("%d", &resposta) != 1) {
