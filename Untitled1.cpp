@@ -498,6 +498,48 @@ void consultarServicosRealizados() {
     }
 }
 
+void cadastrarProduto() {
+    while (numeroProdutos < 100) {
+        struct Produto novoProduto;
+
+        printf("Digite o nome do produto: ");
+        fgets(novoProduto.nome, sizeof(novoProduto.nome), stdin);
+        novoProduto.nome[strcspn(novoProduto.nome, "\n")] = '\0';
+
+        printf("Digite o preço do produto: ");
+        if (scanf("%f", &novoProduto.preco) != 1) {
+            printf("Entrada inválida.\n");
+            return;
+        }
+
+        printf("Digite a quantidade em estoque: ");
+        if (scanf("%d", &novoProduto.quantidadeEstoque) != 1) {
+            printf("Entrada inválida.\n");
+            return;
+        }
+
+        produtos[numeroProdutos] = novoProduto;
+        numeroProdutos++;
+
+        printf("Produto cadastrado com sucesso!\n");
+
+        printf("Deseja cadastrar mais algum produto? (1 - Sim / 0 - Não): ");
+        int resposta;
+        if (scanf("%d", &resposta) != 1) {
+            printf("Entrada inválida.\n");
+            return;
+        }
+
+        if (resposta != 1) {
+            break; 
+        }
+
+        while (getchar() != '\n');  
+        
+    }
+
+    printf("Cadastro de produtos concluído.\n");
+}
 
 int fazerLogin(struct Funcionario *usuarioLogado) {
     char login[20];
