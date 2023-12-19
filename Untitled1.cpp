@@ -195,39 +195,141 @@ void cadastrarClienteGerarOS() {
     }
 }
 void preencherChecklist() {
-    int produtoSelecionado;
-    char continuar;
+  int resposta;
+  char cpfCliente[15];
 
-    printf("Mecânico, selecione os produtos utilizados no checklist (digite o número do produto):\n");
+  printf("Digite o CPF do cliente: ");
+  if (fgets(cpfCliente, sizeof(cpfCliente), stdin) == NULL) {
+      perror("Erro ao ler o CPF do cliente");
+      return;
+    }
+    cpfCliente[strcspn(cpfCliente, "\n")] = '\0';
 
-    do {
+    int indexOS = encontrarCliente(cpfCliente);
+        
+     if (indexOS != -1) {
+        printf("\nRespostas do Cliente %s:\n", ordensServico[indexOS].cliente.nomeCompleto);
+
+        printf("Modelo do veículo: %s\n", ordensServico[indexOS].cliente.modeloVeiculo);
+        printf("Reclamações do cliente: %s\n", ordensServico[indexOS].cliente.reclamacoes);
+        printf("Ano do veículo: %d\n", ordensServico[indexOS].cliente.anoVeiculo);
+        printf("Placa do veículo: %s\n", ordensServico[indexOS].cliente.placaDoVeiculo);
+        printf("Km rodados do veículo: %d\n", ordensServico[indexOS].cliente.kmRodados);
+        printf("Ano da última manutenção do veículo: %d\n", ordensServico[indexOS].cliente.anoUltimaManutencao);
+
+        printf("\nChecklist para o cliente %s:\n", ordensServico[indexOS].cliente.nomeCompleto);
+
+        printf("1. Pneus:\n");
+        printf("   Os pneus estão em boa condição? Eles têm a pressão correta e a profundidade mínima legal? (1 - Sim / 0 - Não): ");
+        if (scanf("%d", &resposta) != 1) {
+            fflush(stdin); 
+        }
+        ordensServico[indexOS].checklist[0] = (resposta == 1) ? '1' : '0';
+         
+        printf("2. Fluidos:\n");
+        printf("   Os fluidos do veículo estão no nível correto? (1 - Sim / 0 - Não): ");
+        if (scanf("%d", &resposta) != 1) {
+            fflush(stdin); 
+        }
+        ordensServico[indexOS].checklist[1] = (resposta == 1) ? '1' : '0';
+
+        printf("3. Freios:\n");
+        printf("   O sistema de freios está funcionando corretamente? (1 - Sim / 0 - Não): ");
+        if (scanf("%d", &resposta) != 1) {
+            fflush(stdin); 
+        }
+        ordensServico[indexOS].checklist[2] = (resposta == 1) ? '1' : '0';
+
+        printf("4. Iluminação:\n");
+        printf("   O sistema de iluminação do veículo está operando corretamente? (1 - Sim / 0 - Não): ");
+        if (scanf("%d", &resposta) != 1) {
+            fflush(stdin); 
+        }
+        ordensServico[indexOS].checklist[3] = (resposta == 1) ? '1' : '0';
+
+        printf("5. Suspensão:\n");
+        printf("   O sistema de suspensão está em boas condições? (1 - Sim / 0 - Não): ");
+        if (scanf("%d", &resposta) != 1) {
+            fflush(stdin); 
+        }
+        ordensServico[indexOS].checklist[4] = (resposta == 1) ? '1' : '0';
+
+        printf("6. Direção:\n");
+        printf("   O sistema de direção está operando corretamente? (1 - Sim / 0 - Não): ");
+        if (scanf("%d", &resposta) != 1) {
+            fflush(stdin); 
+        }
+        ordensServico[indexOS].checklist[5] = (resposta == 1) ? '1' : '0';
+
+        printf("7. Bateria:\n");
+        printf("   A bateria do veículo está em bom estado? (1 - Sim / 0 - Não): ");
+        if (scanf("%d", &resposta) != 1) {
+            fflush(stdin); 
+        }
+        ordensServico[indexOS].checklist[6] = (resposta == 1) ? '1' : '0';
+
+        printf("8. Sistema Elétrico:\n");
+        printf("   O sistema elétrico do veículo está funcionando corretamente? (1 - Sim / 0 - Não): ");
+        if (scanf("%d", &resposta) != 1) {
+            fflush(stdin);
+        }
+        ordensServico[indexOS].checklist[7] = (resposta == 1) ? '1' : '0';
+
+        printf("\nChecklist preenchido com sucesso para o cliente %s!\n", ordensServico[indexOS].cliente.nomeCompleto);
+    } else {
+        printf("Cliente não encontrado.\n");
+    }
+}
+
+void adicionarProdutoOS(int indexOS, int *quantidadeProdutos, float *valorProdutos) {
+int opcaoProduto;
+int quantidade;
+
+printf("\nAdicionar produtos à Ordem de Serviço:\n");
+
+while (1) {
+        
         exibirTabelaPrecos();
-
-        printf("Digite 'fim' para encerrar a seleção.\n");
-
-        printf("Escolha: ");
-        if (scanf("%d", &produtoSelecionado) != 1);
-
-        if (produtoSelecionado >= 1 && produtoSelecionado <= sizeof(produtos) / sizeof(produtos[0])) {
-            printf("Produto selecionado: %s\n", produtos[produtoSelecionado - 1].nome);
-
-            if (produtos[produtoSelecionado - 1].quantidadeEstoque > 0) {
-                produtos[produtoSelecionado - 1].quantidadeEstoque--;
-                printf("Quantidade em estoque atualizada: %d\n", produtos[produtoSelecionado - 1].quantidadeEstoque);
-            } else {
-                printf("Estoque esgotado para este produto.\n");
-            }
-        } else if (produtoSelecionado != 0) {
-            printf("Opção inválida. Tente novamente.\n");
+        printf("Escolha um produto (digite o número) ou 0 para sair: ");
+        if (scanf("%d", &opcaoProduto) != 1) {
+            printf("Entrada inválida.\n");
+            return;
         }
 
-        while (getchar() != '\n');
+        if (opcaoProduto == 0) {
+            break; 
+        }
 
-        printf("Deseja adicionar mais produtos? (s/n): ");
-        if (scanf("%c", &continuar) != 1);
+        if (opcaoProduto >= 1 && opcaoProduto <= numeroProdutos) {
 
-    } while (continuar == 's');
+            printf("Digite a quantidade desejada: ");
+            if (scanf("%d", &quantidade) != 1) {
+                printf("Entrada inválida.\n");
+                return;
+            }
+
+            if (quantidade > 0 && quantidade <= produtos[opcaoProduto - 1].quantidadeEstoque) {
+
+                strcat(ordensServico[indexOS].pecas, produtos[opcaoProduto - 1].nome);
+                strcat(ordensServico[indexOS].pecas, "; ");
+                produtos[opcaoProduto - 1].quantidadeEstoque -= quantidade;
+
+
+               *quantidadeProdutos += quantidade;
+
+
+               *valorProdutos += produtos[opcaoProduto - 1].preco * quantidade;
+             } else {
+                printf("Quantidade inválida ou insuficiente em estoque.\n");
+             }
+         }     else {
+                printf("Opção de produto inválida.\n");
+         }
+    }
+    
+    printf("Produtos adicionados à Ordem de Serviço com sucesso!\n");
 }
+
 int main(){
     carregarFuncionariosDoArquivo();
 
